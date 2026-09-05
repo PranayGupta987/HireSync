@@ -1,4 +1,4 @@
-import {Ingest} from "inngest";
+import {Inngest} from "inngest";
 import {connnectDB} from "./db.js";
 import User from "../models/User.js";
 
