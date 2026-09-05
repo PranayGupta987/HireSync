@@ -5,6 +5,7 @@ import { connectDB } from "./lib/db.js"
 import dns from "dns"; 
 import {serve} from "inngest/express"
 import { inngest,functions } from "./lib/inngets.js";
+import cors from "cors";
 
 dns.setServers(['1.1.1.1', '8.8.8.8']);
 
