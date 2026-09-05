@@ -15,7 +15,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "hiresync": "file:..",
-    "mongoose": "^8.19.1",
+    "mongodb": "^7.6.0",
+    "mongoose": "^9.9.5",
     "nodemon": "^3.1.10"
   }
 }
