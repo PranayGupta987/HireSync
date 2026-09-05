@@ -17,6 +17,7 @@ const syncUser = inngest.createFunction(
             profileImage: image_url, 
         }; 
         await User.create(newUser); 
+        console.log(`User synced to MongoDB: ${id}`);
     } 
 ); 
  
@@ -28,6 +29,7 @@ const deleteUserFromDB = inngest.createFunction(
         await connectDB(); 
         const { id } = event.data; 
         await User.deleteOne({ clerkId: id }); 
+        console.log(`User deleted from MongoDB: ${id}`);
     } 
 ); 
  
