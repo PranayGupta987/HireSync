@@ -1,11 +1,11 @@
 import { Inngest } from "inngest"; 
 import { connectDB } from "./db.js"; 
 import User from "../models/User.js"; 
- 
+import { upsertStreamUser,deleteStreamUser } from "./stream.js";
 export const inngest = new Inngest({ id: "Hire--Sync" }); 
  
 const syncUser = inngest.createFunction( 
-    {id: "sync-user", name: "Sync User",}, 
+    {id: "sync-user", name: "Sync User"}, 
     {event: "clerk/user.created",}, 
     async ({ event }) => { 
         await connectDB(); 
@@ -18,18 +18,23 @@ const syncUser = inngest.createFunction(
         }; 
         await User.create(newUser); 
         console.log(`User synced to MongoDB: ${id}`);
+        await upsertStreamUser({
+            id: newUser.clerkId.toString(),
+            name: newUser.name,
+            image: newUser.profileImage
+        })
     } 
 ); 
  
 const deleteUserFromDB = inngest.createFunction( 
-    {id: "delete-user-from-db",name: "Delete User From DB", 
-    }, 
+    {id: "delete-user-from-db",name: "Delete User From DB"}, 
     {event: "clerk/user.deleted",}, 
     async ({ event }) => { 
         await connectDB(); 
         const { id } = event.data; 
         await User.deleteOne({ clerkId: id }); 
         console.log(`User deleted from MongoDB: ${id}`);
+        await deleteStreamUser(id.toString());
     } 
 ); 
  
